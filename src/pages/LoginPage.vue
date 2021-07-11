@@ -1,104 +1,88 @@
 <template>
-  <form @submit.prevent="submitForm">
-    <div class="row q-mb-md">
-      <q-banner class="bg-grey-3 col">
-        <template v-slot:avatar>
-          <q-icon name="account_circle" color="primary"/>
-        </template>
-        {{ tab | titleCase }}
-      </q-banner>
-    </div>
-    <div class="row q-mb-md">
-      <q-input
-        v-show="tab==='register'"
-        v-model="formData.name"
-        ref="Name"
-        class="col"
-        label="Name"
-        type="name"
-        outlined
-        stack-label
-      />
-    </div>
-    <div class="row q-mb-sm">
-      <q-input
-        v-model="formData.email"
-        :rules="[ val => isValidEmailAddress(val) || 'Please enter a valid email address.']"
-        ref="email"
-        lazy-rules
-        class="col"
-        label="Email"
-        outlined
-        stack-label
-      />
-    </div>
-    <div class="row q-mb-md">
-      <q-input
-        v-model="formData.password"
-        :rules="[ val => val.length >= 6 || 'Please enter at least 6 characters.']"
-        ref="password"
-        lazy-rules
-        type="password"
-        class="col"
-        label="Password"
-        outlined
-        stack-label
-      />
-    </div>
-    <div class="text-center">
-      <q-space/>
-      <q-btn
-        color="primary"
-        :label="tab"
-        type="submit"
-      />
-    </div>
-  </form>
-</template>
+  <q-page padding>
+<div>
+    <q-card class="auth-tabs">
+      <q-tabs
+        v-model="tab"
+        dense
+        class="text-grey"
+        active-color="primary"
+        indicator-color="primary"
+        align="justify"
+        narrow-indicator
+      >
+        <q-tab name="login" label="Login"/>
+        <q-tab name="register" label="Register"/>
+      </q-tabs>
 
+      <q-separator/>
+      <q-tab-panels v-model="tab" animated>
+        <q-tab-panel name="login">
+          <RegisterLogin :tab="tab"/>
+        </q-tab-panel>
+        <q-tab-panel name="register">
+          <RegisterLogin :tab="tab"/>
+        </q-tab-panel>
+      </q-tab-panels>
+    </q-card>
+    <div class="google">
+      <p class=" title">:הכנס באמצעות</p>
+      <google-provider/>
+    </div>
+    <div class="q-ma-sm text-center">
+      <q-btn class="text-weight-bold btn" flat @click="forgotPassword">
+        <a class="password" href="">forget your password? </a>
+      </q-btn>
+    </div>
+  </div>
+  </q-page>
+</template>
 <script>
-import {mapActions} from "vuex";
+import RegisterLogin from "components/auth/Register";
+import GoogleProvider from "components/auth/GoogleProvider";
 
 export default {
-  props: ['tab'],
+  name: 'Login',
   data() {
     return {
-      formData: {
-        name: '',
-        email: '',
-        password: ''
-      }
-    }
+      tab: "login",
+    };
   },
+  components: {GoogleProvider, RegisterLogin},
   methods: {
-    ...mapActions('auth', ['registerUser', 'loginUser']),
-    submitForm() {
-      this.$refs.email.validate()
-      this.$refs.password.validate()
-      if (!this.$refs.email.hasError &&
-        !this.$refs.password.hasError) {
-        if (this.tab === 'login') {
-          this.loginUser(this.formData)
-        } else {
-          debugger
-          this.registerUser(this.formData)
-        }
-      }
+    forgotPassword() {
+      this.$router.push('/reset-password')
     },
-    isValidEmailAddress(Email) {
-      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(String(Email).toLowerCase());
-    }
-  },
-  filters: {
-    titleCase(value) {
-      return value.charAt(0).toUpperCase() + value.slice(1)
-    }
-  },
-
-}
+  }
+};
 </script>
 
-<style>
+<style scoped lang="scss">
+.auth-tabs {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.google{
+  margin: 30px;
+  padding: 30px;
+}
+.password {
+  color: #111010;
+  display: block;
+  padding: 32px;
+  font-size: 16px;
+}
+.title{
+  text-align: center;
+  background: #79a4e0;
+  border: 2px solid;
+  color: white;
+  padding: 6px;
+  border-radius: 20px;
+  font-size: medium;
+  font-weight: bold;
+  max-width: 600px;
+  margin: 0 auto;
 
+}
 </style>
