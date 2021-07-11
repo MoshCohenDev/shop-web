@@ -28,10 +28,11 @@
         <q-btn
           icon="person"
           rounded
+          to="/"
           class="text-weight-bold btn"
           outline label="כניסה"/>
         <q-btn
-          to="/"
+          to="/home"
           flat size="lg"  icon="home"/>
       </q-toolbar>
     </q-header>

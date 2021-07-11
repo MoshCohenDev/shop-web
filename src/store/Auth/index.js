@@ -1,7 +1,9 @@
+import {LocalStorage} from 'quasar'
+import {firebaseAuth} from "boot/firebase";
 import state from './state'
-import getters from "src/store/category/getters";
-import mutations from "src/store/category/mutations";
-import actions from "src/store/category/actions";
+import getters from './getters'
+import mutations from './mutations'
+import actions from './actions'
 
 export default {
   namespaced: true,
