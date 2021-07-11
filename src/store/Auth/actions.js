@@ -1,4 +1,4 @@
-import {firebaseAuth} from "boot/firebase";
+import {firebaseAuth} from "src/middlewere/firebase";
 import {LocalStorage, Loading} from "quasar";
 import {showErrorMessage} from "src/functions/function-error-message";
 

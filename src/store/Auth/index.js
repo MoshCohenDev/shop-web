@@ -1,5 +1,5 @@
 import {LocalStorage} from 'quasar'
-import {firebaseAuth} from "boot/firebase";
+import {firebaseAuth} from "src/middlewere/firebase";
 import state from './state'
 import getters from './getters'
 import mutations from './mutations'
